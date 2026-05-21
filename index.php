@@ -341,10 +341,10 @@ if (!empty($location)) {
         
         // Show alert and reload to show the expired message
         alert('Your session has expired after 60 seconds. Please log in again.');
-        window.location.reload();
+        window.location.reload();//test
     }, 60000); // 60 seconds
 <?php endif; ?>
 </script>
 
 </body>
-</html>
+</html> 
