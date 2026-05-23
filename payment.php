@@ -180,7 +180,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['pay_now'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Payment | VENUESUITE</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/styles.css"/>
+  <link rel="stylesheet" href="assets/css/styles.css"/>
 </head>
 <body>
 
@@ -343,7 +343,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['pay_now'])) {
 
 <?php include 'includes/footer.php'; ?>
 
-<script src="assets/payment.js"></script>
+<script src="assets/js/payment.js"></script>
 
 </body>
 </html>
