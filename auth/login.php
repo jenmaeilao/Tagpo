@@ -58,48 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="../assets/styles.css">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            background: var(--bg);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-        }
-        .login-card {
-            border: none;
-            border-radius: var(--radius-lg);
-            background: #ffffff;
-            box-shadow: var(--shadow-lg);
-            overflow: hidden;
-        }
-        .login-header {
-            background: var(--deep);
-            padding: 40px;
-            text-align: center;
-            color: #fff;
-        }
-        .login-body {
-            padding: 40px;
-        }
-        .form-control {
-            background: #f9fafb;
-            border: 1px solid var(--border);
-            padding: 12px 15px;
-        }
-        .form-control:focus {
-            background: #fff;
-            border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
-        }
-        .brand-font {
-            font-family: 'Playfair Display', serif;
-        }
-        .alert-custom {
-            border-radius: var(--radius-sm);
-            font-size: 0.85rem;
-            border: none;
-        }
-    </style>
+    <link rel="stylesheet" href="/assets/loginsignup.css">
 </head>
 <body>
 
@@ -177,6 +136,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+</script>
+<script src="../assets/loginsignup.js"></script>
 
 </body>
 </html>

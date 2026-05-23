@@ -17,21 +17,24 @@ if (!isset($_COOKIE['user_session']) && isset($_SESSION['cart'])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $_SESSION['users'][] = [
-        'name' => $_POST['name'],
-        'email' => $_POST['email'],
-        'password' => $_POST['password']
-    ];
+    $name = trim($_POST['name']);
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
 
     $_SESSION['users'][] = [
-    'name' => $_POST['name'],
-    'email' => $_POST['email'],
-    'password' => $_POST['password'],
-    'role' => 'user' // default
-    ];
+    'name' => $name,
+    'email' => $email,
+    'password' => $password,
+    'role' => 'user'
+];
 
-    header("Location: login.php?status=registered");
-    exit();
+// AUTO LOGIN (IMPORTANT)
+$_SESSION['current_user'] = end($_SESSION['users']);
+
+setcookie('user_session', $email, time() + (60*60*24*7), '/');
+
+header('Location: index.php');
+exit();
 }
 ?>
 
@@ -42,20 +45,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: #f4f7f6;
-            height: 100vh;
-        }
-        .card {
-            border: none;
-            border-radius: 1rem;
-        }
-        .form-control {
-            border-radius: 0.5rem;
-            padding: 0.75rem;
-        }
-    </style>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <link rel="stylesheet" href="../assets/loginsignup.css">
 </head>
 <body class="d-flex align-items-center">
 
@@ -92,6 +83,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+</script>
+<script src="../assets/loginsignup.js"></script>
 </body>
 </html>
