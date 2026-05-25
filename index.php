@@ -338,7 +338,7 @@ if (!empty($location)) {
     setTimeout(function() {
         // Clear wishlist from storage
         localStorage.removeItem('tagpo_wishlist');
-        
+        //nTest Message
         // Show alert and reload to show the expired message
         alert('Your session has expired after 60 seconds. Please log in again.');
         window.location.reload();//test
