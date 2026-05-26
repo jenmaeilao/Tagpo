@@ -50,13 +50,13 @@ $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
             href="<?php echo $baseUrl; ?>index.php">Venues</a>
         </li>
 
-        <li class="nav-item"><a class="nav-link" href="#venues">Explore Venues</a></li>
-        <li class="nav-item"><a class="nav-link" href="#features">Services</a></li>
-        <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
+        <li class="nav-item"><a class="nav-link" href="<?php echo $baseUrl; ?>index.php#venues">Explore Venues</a></li>
+        <li class="nav-item"><a class="nav-link" href="<?php echo $baseUrl; ?>index.php#features">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="<?php echo $baseUrl; ?>index.php#about">About Us</a></li>
         <li class="nav-item"><a class="nav-link" href="<?php echo $baseUrl; ?>wishlist.php"> Wishlist </a></li>
         <li class="nav-item">
-          <a class="nav-link position-relative" href="<?php echo $baseUrl; ?>cart.php"> 
-            Cart 
+          <a class="nav-link position-relative" href="<?php echo $baseUrl; ?>cart.php">
+            Cart
             <?php if ($cartCount > 0): ?>
               <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                 <?php echo $cartCount; ?>
@@ -64,7 +64,6 @@ $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
             <?php endif; ?>
           </a>
         </li>
-
         <!-- ADMIN NAV (clean placement inside menu) -->
         <?php if ($isAdmin): ?>
           <li class="nav-item dropdown">

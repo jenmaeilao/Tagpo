@@ -1,0 +1,44 @@
+/* Specific Cart UI Tweaks to match Tagpo Style */
+.cart-item-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: #fff;
+  transition: var(--transition);
+  overflow: hidden;
+}
+
+.cart-item-card:hover {
+  box-shadow: var(--shadow);
+}
+
+.item-image-sm {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, var(--deep-mid), var(--deep));
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-light);
+}
+
+.addon-badge {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  display: inline-block;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.summary-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  position: sticky;
+  top: 100px;
+}

@@ -1,9 +1,13 @@
 <?php
+
+ini_set('session.cookie_lifetime', 60 * 60 * 24 * 7);
+ini_set('session.gc_maxlifetime', 60 * 60 * 24 * 7);
+
 session_start();
 
 $baseUrl = '../';
 
-// default admin account
+// Default admin account
 $admin = [
     'name' => 'Admin',
     'email' => 'admin@tagpo.com',
@@ -17,15 +21,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
     $found = false;
 
-    // Check against Admin first
+    // Check against Admin muna (Naka-set sa 1 Araw / 24 Oras ang expiry)
     if ($email == $admin['email'] && $password == $admin['password']) {
         $_SESSION['current_user'] = $admin;
-        setcookie('user_session', $admin['email'], time() + 30, '/');
+        setcookie('user_session', $admin['email'], time() + (60 * 60 * 24), '/');
         header("Location: ../index.php");
         exit();
     }
 
-    // Check against session users
+    // Check against registered session users
     if (isset($_SESSION['users'])) {
         foreach ($_SESSION['users'] as $user) {
             if ($user['email'] == $email && $user['password'] == $password) {
@@ -37,7 +41,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if ($found) {
-        setcookie('user_session', $_SESSION['current_user']['email'], time() + 30, '/');
+        // Para sa regular users (Naka-set sa 7 Araw ang expiry)
+        setcookie('user_session', $_SESSION['current_user']['email'], time() + (60 * 60 * 24 * 7), '/');
         header("Location: ../index.php");
         exit();
     } else {
@@ -52,12 +57,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | TAGPO</title>
-    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Your Custom Style -->
-    <link rel="stylesheet" href="../assets/css/loginsignup.css">
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
     <link rel="stylesheet" href="../assets/css/loginsignup.css">
 </head>
 <body>
@@ -66,19 +68,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-5 col-xl-4">
             
-            <!-- Logo / Brand Heading -->
             <div class="text-center mb-4 fade-up">
                 <h1 class="brand-font fw-bold" style="font-size: 2.5rem;">TAGPO<span class="text-gold">.</span></h1>
             </div>
 
-            <div class="login-card fade-up-1">
+            <div class="card shadow-lg p-4 fade-up-1">
                 <div class="login-body">
                     <div class="text-center mb-4">
                         <h3 class="fw-bold mb-1">Welcome Back</h3>
                         <p class="text-muted small">Sign in to manage your bookings</p>
                     </div>
 
-                    <!-- Status Messages -->
                     <?php if(isset($_GET['status']) && $_GET['status'] == 'registered'): ?>
                         <div class="alert alert-success alert-custom mb-4">
                             <i class="fa-solid fa-circle-check me-2"></i> Account created! Please login.
@@ -136,8 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
-</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/loginsignup.js"></script>
 
 </body>

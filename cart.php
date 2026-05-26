@@ -25,50 +25,10 @@ $total = 0;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Booking Cart | Tagpo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/styles.css"> <!-- Your existing CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css"> 
+    <link rel="stylesheet" href="assets/css/cart.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Specific Cart UI Tweaks to match Tagpo Style */
-        .cart-item-card {
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            background: #fff;
-            transition: var(--transition);
-            overflow: hidden;
-        }
-        .cart-item-card:hover {
-            box-shadow: var(--shadow);
-        }
-        .item-image-sm {
-            width: 120px;
-            height: 120px;
-            background: linear-gradient(135deg, var(--deep-mid), var(--deep));
-            border-radius: var(--radius);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gold-light);
-        }
-        .addon-badge {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            color: var(--muted);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            display: inline-block;
-            margin-right: 5px;
-            margin-bottom: 5px;
-        }
-        .summary-card {
-            background: #fff;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 24px;
-            position: sticky;
-            top: 100px;
-        }
-    </style>
+
 </head>
 
 <body>
