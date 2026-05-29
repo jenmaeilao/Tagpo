@@ -1,18 +1,21 @@
 <?php
-session_start();
+require_once 'config/session_config.php';
 
-// Check if user session expired (no cookie but had session)
-$sessionExpired = false;
-if (!isset($_COOKIE['user_session']) && isset($_SESSION['current_user'])) {
-    session_destroy();
-    $sessionExpired = true;
+// Update activity timestamp
+$_SESSION['last_activity'] = time();
+
+// Refresh cookie if logged in
+$currentUser = getCurrentUser();
+if ($currentUser) {
+    setcookie('user_session', $currentUser['email'], time() + (60 * 60 * 24 * 7), '/');
 }
 
-// Check if currently logged in
-$isLoggedIn = isset($_SESSION['current_user']);
+// Check for session expiry message
+$sessionExpired = isset($_GET['session_expired']);
 
-// 1. Admin Check logic
-$isAdmin = isset($_SESSION['current_user']['role']) && $_SESSION['current_user']['role'] === 'admin';
+// Get logged in status and admin status
+$isLoggedIn = isLoggedIn();
+$isAdmin = isAdmin();
 
 // 2. Data Preparation
 $defaultVenues = [

@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once 'config/session_config.php';
 
 // Check if user session expired (no cookie but had session)
 if (!isset($_COOKIE['user_session']) && isset($_SESSION['current_user'])) {
@@ -12,9 +12,9 @@ if (!isset($_COOKIE['user_session']) && isset($_SESSION['current_user'])) {
 // Update last activity time
 $_SESSION['last_activity'] = time();
 
-// Refresh the cookie to extend 60 seconds
+// Refresh the cookie to extend 7 days
 if (isset($_SESSION['current_user'])) {
-    setcookie('user_session', $_SESSION['current_user']['email'], time() + 60, '/');
+    setcookie('user_session', $_SESSION['current_user']['email'], time() + (60 * 60 * 24 * 7), '/');
 }
 
 $item = [

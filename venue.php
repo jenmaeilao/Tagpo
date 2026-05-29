@@ -1,17 +1,13 @@
 <?php
-session_start();
+require_once 'config/session_config.php';
 
-// Check if user session expired (no cookie but had session)
-if (!isset($_COOKIE['user_session']) && isset($_SESSION['current_user'])) {
-    session_destroy();
-    $_SESSION = [];
-    header("Location: index.php?expired=true");
-    exit();
-}
+// Update activity
+$_SESSION['last_activity'] = time();
 
-// Clear cart if session expired
-if (!isset($_COOKIE['user_session']) && isset($_SESSION['cart'])) {
-    unset($_SESSION['cart']);
+// Refresh cookie if logged in
+if (isLoggedIn()) {
+    $currentUser = getCurrentUser();
+    setcookie('user_session', $currentUser['email'], time() + (60 * 60 * 24 * 7), '/');
 }
 
 $id = $_GET['id'] ?? null;

@@ -1,29 +1,15 @@
 <?php
+// Include session configuration if not already started
 if (session_status() === PHP_SESSION_NONE) {
-  session_start();
+    require_once dirname(__DIR__) . '/config/session_config.php';
 }
 
-// Check if user session expired (no cookie but had session)
-if (!isset($_COOKIE['user_session']) && isset($_SESSION['current_user'])) {
-  session_destroy();
-  $_SESSION = [];
-}
-
-// Clear cart if session expired
-if (!isset($_COOKIE['user_session']) && isset($_SESSION['cart'])) {
-  unset($_SESSION['cart']);
-}
-
-// Determine base URL for links (set $baseUrl = '../' in subdirectory pages)
 $baseUrl = isset($baseUrl) ? $baseUrl : '';
-
 $current = basename($_SERVER['PHP_SELF']);
 
-$isAdmin = isset($_SESSION['current_user']['role'])
-  && $_SESSION['current_user']['role'] === 'admin';
-
-// Get cart count
-$cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
+$isAdmin = isAdmin();
+$cartCount = getCartCount();
+$currentUser = getCurrentUser();
 ?>
 
 <nav class="navbar navbar-expand-lg sticky-top">
@@ -45,13 +31,8 @@ $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
 
       <ul class="navbar-nav mx-auto">
 
-        <li class="nav-item">
-          <a class="nav-link <?php echo $current === 'index.php' ? 'fw-semibold text-dark' : ''; ?>"
-            href="<?php echo $baseUrl; ?>index.php">Venues</a>
-        </li>
-
+        <li class="nav-item"><a class="nav-link <?php echo $current === 'index.php' ? 'fw-semibold text-dark' : ''; ?>" href="<?php echo $baseUrl; ?>index.php">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="<?php echo $baseUrl; ?>index.php#venues">Explore Venues</a></li>
-        <li class="nav-item"><a class="nav-link" href="<?php echo $baseUrl; ?>index.php#features">Services</a></li>
         <li class="nav-item"><a class="nav-link" href="<?php echo $baseUrl; ?>index.php#about">About Us</a></li>
         <li class="nav-item"><a class="nav-link" href="<?php echo $baseUrl; ?>wishlist.php"> Wishlist </a></li>
         <li class="nav-item">
@@ -84,10 +65,10 @@ $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
       <!-- RIGHT SIDE -->
       <div class="d-flex align-items-center gap-2">
 
-        <?php if (isset($_SESSION['current_user'])): ?>
+        <?php if (isLoggedIn()): ?>
 
           <span class="fw-semibold d-none d-md-inline">
-            Hi, <?php echo $_SESSION['current_user']['name']; ?> 👋
+            Hi, <?php echo htmlspecialchars($currentUser['name']); ?> 👋
           </span>
 
 

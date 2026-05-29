@@ -1,7 +1,5 @@
 <?php
-session_start();
-
-$baseUrl = '../';
+require_once dirname(__DIR__) . '/config/session_config.php';
 
 // Check if user session expired (no cookie but had session)
 if (!isset($_COOKIE['user_session']) && isset($_SESSION['current_user'])) {
@@ -11,30 +9,32 @@ if (!isset($_COOKIE['user_session']) && isset($_SESSION['current_user'])) {
     exit();
 }
 
-// Clear cart if session expired
-if (!isset($_COOKIE['user_session']) && isset($_SESSION['cart'])) {
-    unset($_SESSION['cart']);
-}
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
     $password = $_POST['password'];
 
+    // Initialize users array if not exists
+    if (!isset($_SESSION['users'])) {
+        $_SESSION['users'] = [];
+    }
+
     $_SESSION['users'][] = [
-    'name' => $name,
-    'email' => $email,
-    'password' => $password,
-    'role' => 'user'
-];
+        'name' => $name,
+        'email' => $email,
+        'password' => $password,
+        'role' => 'user'
+    ];
 
-// AUTO LOGIN (IMPORTANT)
-$_SESSION['current_user'] = end($_SESSION['users']);
+    // AUTO LOGIN (IMPORTANT)
+    $_SESSION['current_user'] = end($_SESSION['users']);
+    $_SESSION['last_activity'] = time();
 
-setcookie('user_session', $email, time() + (60*60*24*7), '/');
+    // Set cookie for 7 days
+    setcookie('user_session', $email, time() + (60 * 60 * 24 * 7), '/');
 
-header('Location: index.php');
-exit();
+    header('Location: ../index.php');
+    exit();
 }
 ?>
 

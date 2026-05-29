@@ -1,11 +1,5 @@
 <?php
-
-ini_set('session.cookie_lifetime', 60 * 60 * 24 * 7);
-ini_set('session.gc_maxlifetime', 60 * 60 * 24 * 7);
-
-session_start();
-
-$baseUrl = '../';
+require_once dirname(__DIR__) . '/config/session_config.php';
 
 // Default admin account
 $admin = [
@@ -21,10 +15,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
     $found = false;
 
-    // Check against Admin muna (Naka-set sa 1 Araw / 24 Oras ang expiry)
+    // Check against Admin
     if ($email == $admin['email'] && $password == $admin['password']) {
         $_SESSION['current_user'] = $admin;
-        setcookie('user_session', $admin['email'], time() + (60 * 60 * 24), '/');
+        $_SESSION['last_activity'] = time();
+        // Set cookie for 7 days
+        setcookie('user_session', $admin['email'], time() + (60 * 60 * 24 * 7), '/');
         header("Location: ../index.php");
         exit();
     }
@@ -35,13 +31,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($user['email'] == $email && $user['password'] == $password) {
                 $found = true;
                 $_SESSION['current_user'] = $user;
+                $_SESSION['last_activity'] = time();
                 break;
             }
         }
     }
 
     if ($found) {
-        // Para sa regular users (Naka-set sa 7 Araw ang expiry)
+        // Set cookie for 7 days
         setcookie('user_session', $_SESSION['current_user']['email'], time() + (60 * 60 * 24 * 7), '/');
         header("Location: ../index.php");
         exit();
@@ -69,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="col-md-6 col-lg-5 col-xl-4">
             
             <div class="text-center mb-4 fade-up">
-                <h1 class="brand-font fw-bold" style="font-size: 2.5rem;">TAGPO<span class="text-gold">.</span></h1>
+                <h1 class="brand-font fw-bold text-gold"" style="font-size: 2.5rem;">TAGPO<span class="text-gold">.</span></h1>
             </div>
 
             <div class="card shadow-lg p-4 fade-up-1">

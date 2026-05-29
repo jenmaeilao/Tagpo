@@ -1,11 +1,25 @@
 <?php
 session_start();
-$baseUrl = '../';
+
+// Clear session array
+$_SESSION = [];
+
+// Destroy session
 session_destroy();
 
-// Clear the user_session cookie
+// Remove session cookie (important)
+if (ini_get("session.use_cookies")) {
+    $params = session_get_cookie_params();
+    setcookie(session_name(), '', time() - 3600,
+        $params["path"],
+        $params["domain"],
+        $params["secure"],
+        $params["httponly"]
+    );
+}
+
+// Clear your custom cookie
 setcookie('user_session', '', time() - 3600, '/');
-unset($_COOKIE['user_session']);
 ?>
 
 <!DOCTYPE html>
@@ -15,10 +29,7 @@ unset($_COOKIE['user_session']);
 </head>
 <body>
     <script>
-        // Clear wishlist from localStorage
         localStorage.removeItem('tagpo_wishlist');
-        
-        // Redirect to login
         window.location.href = './login.php?status=logged_out';
     </script>
 </body>

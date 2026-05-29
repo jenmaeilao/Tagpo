@@ -1,5 +1,13 @@
 <?php
-session_start();
+require_once 'config/session_config.php';
+
+// Update activity
+$_SESSION['last_activity'] = time();
+
+// Refresh cookie
+if (isset($_SESSION['current_user'])) {
+    setcookie('user_session', $_SESSION['current_user']['email'], time() + (60 * 60 * 24 * 7), '/');
+}
 
 // Check if user session expired (no cookie but had session)
 if (!isset($_COOKIE['user_session']) && isset($_SESSION['current_user'])) {
@@ -15,7 +23,7 @@ if (!isset($_COOKIE['user_session']) && isset($_SESSION['cart'])) {
 }
 
 /* =========================================
-   DATA FROM VENUE.PHP (POST) OR BOOKING1.PHP (GET)
+   DATA FROM VENUE.PHP (POST) OR BOOKING1.PHP (GET) OR CART.PHP (POST)
 ========================================= */
 $venueId     = $_POST['venue_id'] ?? $_GET['venue_id'] ?? 1;
 $venueName   = $_POST['venue_name'] ?? $_GET['venue_name'] ?? 'Paradiso Terrestre';
@@ -26,6 +34,7 @@ $eventTime   = $_POST['event_time'] ?? $_GET['time'] ?? '18:00';
 $duration    = $_POST['duration'] ?? $_GET['duration'] ?? '4 hours';
 $guestCount  = (int) ($_POST['guests'] ?? $_GET['guests'] ?? 50);
 $customerName = $_POST['guest_name'] ?? $_POST['name'] ?? $_GET['name'] ?? 'Guest';
+$addons = $_POST['addons'] ?? $_GET['addons'] ?? [];
 
 /* =========================
    NUMERIC ARRAY & CALCULATION
@@ -49,6 +58,26 @@ if (strtolower($duration) === 'full day') {
     $feeLabels[] = "Full Day Fee";
 }
 
+// Add-ons Fees
+$addonsFees = [];
+if (!empty($addons)) {
+    foreach ($addons as $addon) {
+        $addonPrice = 0;
+        if ($addon === "Catering") {
+            $addonPrice = 5000;
+        } elseif ($addon === "Photo Booth") {
+            $addonPrice = 3000;
+        } elseif ($addon === "DJ Booth") {
+            $addonPrice = 4000;
+        }
+        if ($addonPrice > 0) {
+            $fees[] = $addonPrice;
+            $feeLabels[] = "$addon Add-on";
+            $addonsFees[$addon] = $addonPrice;
+        }
+    }
+}
+
 $total = 0;
 $i = 0;
 for ($i = 0; $i < count($fees); $i++) {
@@ -63,6 +92,10 @@ $breakdown = [
     "Duration: $duration",
     "Guests: $guestCount pax"
 ];
+
+if (!empty($addons)) {
+    $breakdown[] = "Add-ons: " . implode(", ", $addons);
+}
 
 foreach ($fees as $index => $value) {
     $breakdown[] = $feeLabels[$index] . ": ₱" . number_format($value);
@@ -253,6 +286,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['pay_now'])) {
           <input type="hidden" name="duration" value="<?= htmlspecialchars($duration) ?>">
           <input type="hidden" name="guests" value="<?= $guestCount ?>">
           <input type="hidden" name="customer_name" value="<?= htmlspecialchars($customerName) ?>">
+          <?php if (!empty($addons)): ?>
+            <?php foreach ($addons as $addon): ?>
+              <input type="hidden" name="addons[]" value="<?= htmlspecialchars($addon) ?>">
+            <?php endforeach; ?>
+          <?php endif; ?>
 
           <div class="row">
             <div class="col-md-6 mb-3">
